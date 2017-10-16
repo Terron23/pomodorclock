@@ -1,0 +1,73 @@
+body{
+	background: orange;
+}
+
+label{
+	color: black;
+	padding: .5em;
+}
+
+h1{
+	text-align: center;
+	color: black;
+  font-size: 5vw;
+
+}
+
+
+
+.center{
+	display:block;
+
+}
+
+
+
+.timer{
+	margin-top: 20px;
+	width: 850px;
+	height: 350px;
+	border-radius: 30%;
+	border: solid black 2px;
+	color: black;
+  margin: auto;
+}
+
+.timer:hover{
+	background: rgba(255,0,0,.8);
+	cursor: pointer;
+}
+.setSession:hover{
+  	background: rgba(255,0,0,.8);
+	cursor: pointer;
+  font-size: 18px;
+  color: black;
+}
+
+.info{
+	text-align: center;
+	position: relative;
+	top: 10%;
+}
+
+.info p{
+	margin-top: 40px;
+	font-size: 1.3em;
+}
+
+.pomodoro p{
+	color: black;
+	text-align: center;
+	font-size: 3.25vw;
+	padding: 1em;
+}
+
+.setSession{
+
+	color: black;
+ width: 180px;
+	 border: 2px solid black;
+	padding: .5em;
+	border-radius: 10px;
+background:none;
+}

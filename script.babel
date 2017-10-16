@@ -1,0 +1,165 @@
+var audioSession = new Audio('http://www.oringz.com/oringz-uploads/sounds-882-solemn.mp3');
+
+const App = React.createClass({
+	getInitialState: function() {
+        return {
+  start: "Start Timer",
+  stopped: "Resume Timer",
+ 
+        };
+    },
+	iteration: 0,
+	session: 25,
+	breakTime: 1,
+	current: 0,
+	isActive: false,
+	sessionStarter: 24,
+	message: "",
+  start: "Start Timer",
+  stopped: "Resume Timer",
+	
+	componentDidMount(){
+		this.updateTimer();
+	},
+	
+	render() {
+		
+		var that = this;
+		
+	  return (
+			<div className='pomodoro'>
+				<h1>Pomodoro Timer</h1>
+        
+        <div className = 'row text-center'>
+          <div className='inputs center col-md-2'>
+          </div>
+				<div className='inputs center col-md-4'>
+					<label>Enter Time</label><br/>
+					<input onKeyPress={ that.handleSessionSub } placeholder='25' className='setSession' type="Number" />
+          </div>
+          <div className='inputs center col-md-4'>
+					<label>Enter Break</label><br/>
+					<input onKeyPress={ that.handleBreakSub } placeholder='1' className='setSession' type="Number" />
+				</div>
+           <div className='inputs center col-md-2'>
+          </div> 
+        </div>
+			
+      <div className="row text-center">
+      
+          	<div className='col-md-12 text-center'>
+        <div onClick={this.handleTimerClick} className='timer text-center'>
+					<div className='center info'>
+						<h2 className='center'>Session</h2>
+            <h3 id="stop"> {that.state.start}</h3>
+						<p ref="timer" className='center'></p>
+					</div>
+				</div>
+				<p>{that.message}</p>
+          </div>
+      
+          </div>
+        
+			</div>
+    );
+  
+	},
+	
+	handleSessionSub(e){
+		
+		var result;
+		let regex = /[^\d]/;
+		if(e.which === 13){
+			result = e.target.value;
+			if( !regex.test(result) && result<=100){
+				this.session = result;
+				this.sessionStarter = result-1;
+				e.target.blur();
+			}
+			else{
+				alert('enter a number between 1 and 100');
+			}
+		}
+
+	},
+	
+	handleBreakSub(e){
+		
+		var result;
+		let regex = /[^\d]/;
+		if(e.which === 13){
+			result = e.target.value;
+			if( !regex.test(result) && result<=50){
+				this.breakTime = result;
+				e.target.blur();
+			}
+			else{
+				alert('enter a number between 1 and 50');
+			}
+		}
+
+	},
+		
+	handleTimerClick(){
+		
+		let active = this.isActive === true ? false : true;
+		this.isActive = active;
+		this.message = "";
+		this.startTimer();
+   
+	},
+	
+	startTimer(){
+		
+		var that = this;
+		var loop = setInterval( function(){		
+			if( !that.isActive ){
+				clearInterval(loop);
+			}
+			else{
+				var date = new Date();
+				if( Math.round( date.getTime()/1000 ) > that.iteration ){
+					that.updateTimer.call(this);
+					that.iteration = Math.round( date.getTime()/1000 );
+				}
+			}
+		},200);
+		
+		loop();
+		
+	},
+	
+	updateTimer(){
+		let { current,session,breakTime,sessionStarter,isActive, start } = this;
+		
+		if(this.session === this.sessionStarter-this.breakTime){
+			this.sessionStarter--;
+			this.message = 'time for a break';
+			this.isActive = false;
+		}
+		else if( this.session === 0 && this.current === 0){
+			this.message = 'all finished';
+			this.isActive = false;
+		}
+		if( this.isActive ){
+   
+			if(this.current !== 0){
+          
+				this.current--;
+			}
+			else{
+				this.current = 59;
+				this.session--;
+			}
+		}
+		
+		current = current>9 ? current : "0" + current;
+		var str = session + ':' + current;
+		
+		this.refs.timer.getDOMNode().innerHTML = str;
+	}
+	
+});
+
+
+React.render( < App / > , document.getElementById('content'));
